@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title> </title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.8/dist/css/uikit.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.8/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.8/dist/js/uikit-icons.min.js"></script>
+</head>
+<style>
+table, td, th {
+    border: 1px solid;
+    padding: 10px; }
+table {
+    border-collapse: collapse;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace}
+.image-upload{
+    margin-top: 30px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace
+}
+p{
+    text-align: center;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+}
+#myfile{
+    border: 1px solid gray;
+    padding: 10px;
+}
+#submit{
+    padding: 10px;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    font-size: 16px;
+}
+#errormsg{
+    text-align: center;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    font-size: 18px;
+    color: #e54218;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+</style>
+<body>
+<div class="image-upload">
+    <h3>Upload you files supports only <b>.png and .jpg </b></h3>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="myfiles" id="myfile" multiple >
+        <input type="submit" name="submit" id="submit" value="Upload">
+    </form>
+</div>
+
+<br><br>
+<div id="errormsg"></div>
+<br><br>
+
+
+<p>Refresh page to see latest result</p>
+<table class="table my-0">
+  <thead>
+    <tr>
+      <th>Input Images</th>
+      <th>Status</th>
+      <th>Processed Images</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</body>
+<script>
+    $(document).ready(function() {
+         $('form').on('submit', function(event) {
+             console.log(888)
+           $.ajax({
+                    data: new FormData(this),
+                    dataType: 'json',
+                    contentType: false,
+                    cache: false,
+                    processData:false,
+                    type : 'POST',
+                    url : 'http://127.0.0.1:5000/imgbackremoval'
+                })
+            .done(function(data) {
+                console.log(data);
+                document.getElementById("errormsg").innerHTML = data.msg;
+            }).fail(function(data){
+                console.log(data)
+               document.getElementById("errormsg").innerHTML = data.responseText;
+           });
+          event.preventDefault();
+          });
+    });
+
+    function callService() {
+          var json;
+          uri = "http://127.0.0.1:5000/processesdata";
+          var xhr = new XMLHttpRequest();
+          xhr.responseType = "json";
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+              json = xhr.response;
+              loadData(json);
+            }
+          };
+          xhr.open("GET", uri, true);
+          xhr.send(null);
+    }
+    async function loadData(json) {
+          var selector = "results";
+          jsonToTable(json, selector);
+          function jsonToTable(json, selector) {
+                console.log(json);
+                let table = document.querySelector(".my-0");
+                for (let obj of json.data) {
+                  let tr = table.insertRow();
+                  tr.insertCell().textContent = obj.input_image_path;
+                  tr.insertCell().textContent = obj.status;
+                  tr.insertCell().textContent = obj.output_image_path;
+                }
+      }
+    }
+callService();
+
+</script>
+</html>

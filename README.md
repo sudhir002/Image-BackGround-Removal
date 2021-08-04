@@ -8,7 +8,7 @@ ________________________________
 Project is ready for Local server run, for production need to configure the url/endpoint of the server in html and misc file.
 
 
-Added Kafka Datapile Line for Multipule Upload
+Added Kafka Datapipe Line for Multipule Upload
 
 setup Kafka in ubuntu:
 

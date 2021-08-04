@@ -49,6 +49,7 @@ try:
          enable_auto_commit=True,
          group_id='my-group',
          value_deserializer=lambda x: loads(x.decode('utf-8')))
+    print("** Ready for consume the data :) ")
     for msg in consumer:
         message = msg.value
         for x in message:

@@ -23,13 +23,11 @@ sudo nano /etc/systemd/system/zookeeper.service\
        Documentation=http://zookeeper.apache.org\
        Requires=network.target remote-fs.target\
        After=network.target remote-fs.target\
-
        [Service]\
        Type=simple\
        ExecStart=/usr/local/kafka/bin/zookeeper-server-start.sh /usr/local/kafka/config/zookeeper.properties\
        ExecStop=/usr/local/kafka/bin/zookeeper-server-stop.sh\
        Restart=on-abnormal\
-
        [Install]\
        WantedBy=multi-user.target\
        
@@ -38,13 +36,11 @@ sudo nano /etc/systemd/system/kafka.service\
        Description=Apache Kafka Server\
        Documentation=http://kafka.apache.org/documentation.html\
        Requires=zookeeper.service\
-
        [Service]\
        Type=simple\
        Environment="JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64"\
        ExecStart=/usr/local/kafka/bin/kafka-server-start.sh /usr/local/kafka/config/server.properties\
        ExecStop=/usr/local/kafka/bin/kafka-server-stop.sh\
-
        [Install]\
        WantedBy=multi-user.target\
        

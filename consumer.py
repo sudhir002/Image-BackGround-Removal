@@ -15,7 +15,8 @@ from rembg.bg import remove
 import numpy as np
 import io
 from PIL import Image
-
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 logger = logging.getLogger("app.py")
 collection = dc.mongodb()["bg_removal"]
@@ -28,7 +29,11 @@ def bgremoval(id):
         input_path = os.path.abspath("") + data[0]["input_image_path"]
         output_path = os.path.abspath("") + data[0]["output_image_path"]
         f = np.fromfile(input_path)
-        result = remove(f)
+        result = remove(f, alpha_matting=True,
+                    alpha_matting_foreground_threshold=240,
+                    alpha_matting_background_threshold=10,
+                    alpha_matting_erode_structure_size=15,
+                    alpha_matting_base_size=1000)
         img = Image.open(io.BytesIO(result)).convert("RGBA")
         img.save(output_path)
         return "success"

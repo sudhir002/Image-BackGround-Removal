@@ -32,7 +32,7 @@ def background_removal():
                 return "not valid images"
             imgname = []
             for img in images:
-                if img.filename.rsplit(".", 1)[1].lower() not in ['jpg', 'png']:
+                if img.filename.rsplit(".", 1)[1].lower() not in ['jpg', 'png', 'jpeg']:
                     return "not valid images"
                 else:
                     imgname.append(img.filename)

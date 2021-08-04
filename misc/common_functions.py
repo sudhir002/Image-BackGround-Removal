@@ -1,4 +1,11 @@
-__author__ = 'sudhir'
+__author__ = 'Sudhir'
+__date__ = "Aug 3 - 2021"
+
+'''
+Purpose : kafka producer.
+'''
+
+
 '''
 Purpose : Common functions used in the application.
 '''

@@ -1,7 +1,15 @@
+__author__ = 'Sudhir'
+__date__ = "Aug 3 - 2021"
+
+'''
+Purpose : defined the apis.
+'''
+
 import os
 import sys
 import json
 import logging
+from init_log import logger
 from flask_config import application
 from flask import request, send_file
 import misc.common_functions as cf
@@ -9,14 +17,6 @@ import misc.common_functions as cf
 
 logger = logging.getLogger("app.py")
 
-# prevent cached responses
-if application.config["DEBUG"]:
-    @application.after_request
-    def after_request(response):
-        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, public, max-age=0"
-        response.headers["Expires"] = 0
-        response.headers["Pragma"] = "no-cache"
-        return response
 
 
 @application.route('/imgbackremoval', methods=['POST'])
@@ -28,7 +28,6 @@ def background_removal():
                 os.makedirs(input_img_folder)
             application.config['input_img_folder'] = input_img_folder
             images = request.files.getlist("myfiles")
-            print("=-=-=", images)
             if not images[0].filename:
                 return "not valid images"
             imgname = []
@@ -57,10 +56,14 @@ def processesdata():
 
 @application.route('/imageserve', methods=['GET'])
 def imageserve():
-    folder = request.args.get("p")
-    name = request.args.get("n")
-    filename = os.path.abspath("") + "/database/static/{}/{}".format(folder, name)
-    return send_file(filename, mimetype='image/gif')
+    try:
+        folder = request.args.get("p")
+        name = request.args.get("n")
+        filename = os.path.abspath("") + "/database/static/{}/{}".format(folder, name)
+        return send_file(filename, mimetype='image/gif')
+    except Exception as e:
+        logger.error("Exception in imageserve:" + str(repr(e)) + " line number " + str(sys.exc_info()[-1].tb_lineno))
+        return json.dumps({"code": 400, "msg": "something went wrong"})
 
 
 if __name__ == '__main__':

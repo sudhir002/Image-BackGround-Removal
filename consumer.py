@@ -1,3 +1,10 @@
+__author__ = 'Sudhir'
+__date__ = "Aug 3 - 2021"
+
+'''
+Purpose : Kafka consumer.
+'''
+
 import logging
 import json, sys, os
 from kafka import KafkaConsumer
@@ -12,6 +19,7 @@ from PIL import Image
 
 logger = logging.getLogger("app.py")
 collection = dc.mongodb()["bg_removal"]
+
 
 
 def bgremoval(id):

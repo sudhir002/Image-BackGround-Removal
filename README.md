@@ -12,9 +12,9 @@ Added Kafka Datapile Line for Multipule Upload
 
 setup Kafka in ubuntu:
 
-       sudo apt update\
-       sudo apt install default-jdk\
-       wget https://downloads.apache.org/kafka/2.8.0/kafka_2.12-2.8.0.tgz\
+       sudo apt update
+       sudo apt install default-jdk
+       wget https://downloads.apache.org/kafka/2.8.0/kafka_2.12-2.8.0.tgz
        tar xzf kafka_2.12-2.8.0.tgz\
        mv kafka_2.12-2.8.0 /usr/local/kafka\
        sudo nano /etc/systemd/system/zookeeper.service\
